@@ -46,11 +46,11 @@ tuple<shared_ptr<cs457::tcpUserSocket>,int> cs457::tcpServerSocket::acceptSocket
 {
     shared_ptr<cs457::tcpUserSocket> userSocket = make_shared<tcpUserSocket>(); //CLIENT SOCKETS
     socklen_t len = userSocket.get()->getLengthPointer();
-    int client_fd = accept(serverSocket,(struct sockaddr *)userSocket.get()->getAddressPointer(),&len); //accept the socket
+    int client_fd = accept(serverSocket,(struct sockaddr *)userSocket.get()->getAddressPointer(),&len); //accept the socket *page 26 of book
 
     userSocket.get()->setSocket(client_fd); //Setting the socket of the client to the server?
 
-    cout <<"Hope this gets here"<<endl;
+    cout <<"This gets here because socket was accepted"<<endl;
 
     //get ip and port 
     // you can always get it like this: getsockname(sockfd, (struct sockaddr *) &my_addr, &len);
@@ -59,7 +59,7 @@ tuple<shared_ptr<cs457::tcpUserSocket>,int> cs457::tcpServerSocket::acceptSocket
     sockaddr_in * userAddress =  (sockaddr_in *) userSocket.get()->getAddressPointer();
     inet_ntop(AF_INET, &(userAddress->sin_addr), userIPv4, INET_ADDRSTRLEN); //Convert IP addresses to text form
     
-    auto  clientPort = ntohs(userAddress->sin_port);
+    auto  clientPort = ntohs(userAddress->sin_port); //changes from host byte order to network byte order
 
     userSocket.get()->setUserInfoIPv4(string(userIPv4),clientPort); 
 

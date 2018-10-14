@@ -88,10 +88,13 @@ int main(int argc, char * argv[])
     while (ready) //CREATING MULTIPLE CLIENTS TO INTERACT WITH THE SERVER
     { 
         cout <<"gets here"<<std::endl;
+
         //**NEED A CHECK FOR VAL <0
-        shared_ptr<cs457::tcpUserSocket> clientSocket; //CREATING NEW USER/CLIENT SOCKET FOR SERVER - **should come from parsing an argument from main! 
+        shared_ptr<cs457::tcpUserSocket> clientSocket; //CREATING POINTER FOR NEW USER/CLIENT SOCKET FOR SERVER - **should come from parsing an argument from main? 
         int val; //val is going to be the socketFileDescriptor after the tuple call below:
-        tie(clientSocket,val) = mysocket.acceptSocket(); //creating a tuple and accepting the socket 
+        tie(clientSocket,val) = mysocket.acceptSocket(); //creating a tuple and accepting the socket - BLOCKING CALL
+
+
         cout << "value for accept is " << val << std::endl; //val is now socketFileDescriptor - because everything is a file on linux
         cout << "Socket Accepted" << std::endl; 
 
