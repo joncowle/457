@@ -44,13 +44,17 @@ int cs457::tcpServerSocket::listenSocket()
 
 tuple<shared_ptr<cs457::tcpUserSocket>,int> cs457::tcpServerSocket::acceptSocket()
 {
-    shared_ptr<cs457::tcpUserSocket> userSocket = make_shared<tcpUserSocket>(); //CLIENT SOCKETS
+    cout << "Testing ACCEPT SOCKET" <<endl;
+    
+    shared_ptr<cs457::tcpUserSocket> userSocket = make_shared<tcpUserSocket>(); //Constructing a smart pointer for user socket
     socklen_t len = userSocket.get()->getLengthPointer();
+       
+    //serverSocket is private int var in Server Socket class
     int client_fd = accept(serverSocket,(struct sockaddr *)userSocket.get()->getAddressPointer(),&len); //accept the socket *page 26 of book
-
-    userSocket.get()->setSocket(client_fd); //Setting the socket of the client to the server?
-
+    //Client_fd is the new file descriptor
     cout <<"This gets here because socket was accepted"<<endl;
+    userSocket.get()->setSocket(client_fd); //Calling the set method in the tcpUserSocket
+    
 
     //get ip and port 
     // you can always get it like this: getsockname(sockfd, (struct sockaddr *) &my_addr, &len);

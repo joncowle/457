@@ -2,6 +2,8 @@
 #include <memory> 
 #include <cstring> 
 #include <mutex> 
+#include <iostream>
+
 
 using namespace std; 
 
@@ -52,7 +54,8 @@ std::tuple<string,ssize_t> cs457::tcpUserSocket::recvString(int bufferSize, bool
     ssize_t recvMsgSize;
 
     if (useMutex)
-    {
+    {        cout <<"gets here"<<std::endl;
+
         lock_guard<mutex> lock(recvMutex);
         recvMsgSize = recv(userSocket, stringBuffer, bufferSize, 0); 
     }    
@@ -61,7 +64,7 @@ std::tuple<string,ssize_t> cs457::tcpUserSocket::recvString(int bufferSize, bool
         recvMsgSize = recv(userSocket, stringBuffer, bufferSize, 0); 
     }
     
-    
+                                                                                                                                                                                                                                                                                    
    
     return make_tuple(string(stringBuffer),recvMsgSize);     
 };

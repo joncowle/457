@@ -79,28 +79,27 @@ int main(int argc, char * argv[])
     cout << "Binding Socket" << std::endl; 
     mysocket.bindSocket(); //Bind the created SERVER socket "mysocket"
     cout << "Listening Socket" << std::endl; 
-    mysocket.listenSocket(); //Listen for messages?
+    mysocket.listenSocket(); //Listen for connections
     cout << "Waiting to Accept Socket" << std::endl;
     int id = 0; 
-    vector<unique_ptr<thread>> threadList; 
+    vector<unique_ptr<thread>> threadList; //keep track of all child threads
   
 
     while (ready) //CREATING MULTIPLE CLIENTS TO INTERACT WITH THE SERVER
     { 
-        cout <<"gets here"<<std::endl;
 
         //**NEED A CHECK FOR VAL <0
-        shared_ptr<cs457::tcpUserSocket> clientSocket; //CREATING POINTER FOR NEW USER/CLIENT SOCKET FOR SERVER - **should come from parsing an argument from main? 
-        int val; //val is going to be the socketFileDescriptor after the tuple call below:
-        tie(clientSocket,val) = mysocket.acceptSocket(); //creating a tuple and accepting the socket - BLOCKING CALL
+        shared_ptr<cs457::tcpUserSocket> clientSocket;                  //CREATING POINTER FOR NEW USER/CLIENT SOCKET FOR SERVER - **should come from parsing an argument from main? 
+        int val;                                                        //val is going to be the socketFileDescriptor after the tuple call below:
+        tie(clientSocket,val) = mysocket.acceptSocket();                //creating a tuple and accepting the socket - BLOCKING CALL
 
 
-        cout << "value for accept is " << val << std::endl; //val is now socketFileDescriptor - because everything is a file on linux
+        cout << "value for accept is " << val << std::endl;         //val is now socketFileDescriptor - because everything is a file on linux
         cout << "Socket Accepted" << std::endl; 
 
-        unique_ptr<thread> t = make_unique<thread>(cclient,clientSocket,id); //Calling the method above to communicate between users and server
+        unique_ptr<thread> t = make_unique<thread>(cclient,clientSocket,id);        //Creating new THREAD & Calling the method above to communicate between users and server
 
-        threadList.push_back(std::move(t)); //adding this new socket to the list above of active sockets - why do we need this?
+        threadList.push_back(std::move(t));         //adding this new socket to the list above of active sockets - why do we need this?
         
         id++; //not the best way to go about it. 
        // threadList.push_back(t); 
